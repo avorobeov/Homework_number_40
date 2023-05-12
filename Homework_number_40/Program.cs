@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Media;
-using System.Runtime.CompilerServices;
 
 namespace Homework_number_40
 {
@@ -161,7 +159,7 @@ namespace Homework_number_40
             }
             else
             {
-                ShowMessage("пользователь с таким ID уже существует в базе!", ConsoleColor.Red);
+                ShowMessage("Пользователь с таким ID уже существует в базе!", ConsoleColor.Red);
             }
         }
 
