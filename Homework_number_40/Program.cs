@@ -78,8 +78,6 @@ namespace Homework_number_40
             string name = Console.ReadLine();
 
             database.Add(new Player(id, name, lavel, isBanned));
-
-            Console.WriteLine("Данные пользователя успешно добавлены!");
         }
 
         private static void RemovePlayer(Database database)
@@ -158,6 +156,12 @@ namespace Homework_number_40
             if (ContainsId(player.Id) == false)
             {
                 _players.Add(player);
+
+                ShowMessage("Данные пользователя успешно добавлены!");
+            }
+            else
+            {
+                ShowMessage("пользователь с таким ID уже существует в базе!", ConsoleColor.Red);
             }
         }
 
@@ -208,7 +212,7 @@ namespace Homework_number_40
             }
             else
             {
-                Console.WriteLine("К сожалению ни одного игрока в базе нет ");
+                ShowMessage("К сожалению ни одного игрока в базе нет ", ConsoleColor.Blue);
             }
         }
 
@@ -234,6 +238,13 @@ namespace Homework_number_40
             Player foundPlayer;
 
             return TryGetPlayer(out foundPlayer, id);
+        }
+
+        private void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
+        {
+            Console.ForegroundColor = consoleColor;
+            Console.WriteLine(text);
+            Console.ResetColor();
         }
     }
 }
