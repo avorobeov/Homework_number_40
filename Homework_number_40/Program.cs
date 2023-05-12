@@ -233,16 +233,7 @@ namespace Homework_number_40
         {
             Player foundPlayer;
 
-            bool playerFound = TryGetPlayer(out foundPlayer, id);
-
-            if (playerFound == false)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return TryGetPlayer(out foundPlayer, id);
         }
     }
 }
