@@ -21,15 +21,7 @@ namespace Homework_number_40
 
             while (isExit == false)
             {
-                Console.WriteLine("Меню\n" +
-                            "\nДоступные команды\n\n" +
-                            $"1) Добавить игрока ведите {СommandAddUser}\n\n" +
-                            $"2) Вывод списка игроков ведите {CommandPrint}\n\n" +
-                            $"3) Для того что бы забанить игрока ведите {CommandBan}\n\n" +
-                            $"4) Для того что бы разбанить игрока ведите  {CommandUnBan}\n\n" +
-                            $"5) Удалить игрока ведите {CommandRemove}\n\n" +
-                            $"6) Для выхода ведите: {CommandExit}" +
-                            $"Укажите команду: ");
+                ShowMenu();
 
                 userInput = Console.ReadLine();
 
@@ -64,6 +56,19 @@ namespace Homework_number_40
                         break;
                 }
             }
+        }
+
+        static void ShowMenu()
+        {
+            Console.WriteLine("Меню\n" +
+                           "\nДоступные команды\n\n" +
+                           $"1) Добавить игрока ведите {СommandAddUser}\n\n" +
+                           $"2) Вывод списка игроков ведите {CommandPrint}\n\n" +
+                           $"3) Для того что бы забанить игрока ведите {CommandBan}\n\n" +
+                           $"4) Для того что бы разбанить игрока ведите  {CommandUnBan}\n\n" +
+                           $"5) Удалить игрока ведите {CommandRemove}\n\n" +
+                           $"6) Для выхода ведите: {CommandExit}" +
+                           $"Укажите команду: ");
         }
 
         private static void AddPlayer(Database database)
