@@ -75,7 +75,9 @@ namespace Homework_number_40
         private static void AddPlayer(Database database)
         {
             int id = GetNumber("Укажите ID пользователя: ");
+
             int lavel = GetNumber("Укажите lavel пользователя: ");
+
             bool isBanned = false;
 
             ShowMessage("Укажите имя пользователя: ", ConsoleColor.Blue);
