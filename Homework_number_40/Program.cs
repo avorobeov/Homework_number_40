@@ -187,37 +187,37 @@ namespace Homework_number_40
 
         public void Remove(int id)
         {
-            Player foundPlayer;
+            Player player;
 
-            bool playerFound = TryGetPlayer(out foundPlayer, id);
+            bool isFoundPlayer = TryGetPlayer(out player, id);
 
-            if (playerFound == true)
+            if (isFoundPlayer == true)
             {
-                _players.Remove(foundPlayer);
+                _players.Remove(player);
             }
         }
 
         public void Block(int id)
         {
-            Player foundPlayer;
+            Player player;
 
-            bool playerFound = TryGetPlayer(out foundPlayer, id);
+            bool isFoundPlayer = TryGetPlayer(out player, id);
 
-            if (playerFound == true)
+            if (isFoundPlayer == true)
             {
-                foundPlayer.SetBannedStatus(true);
+                player.SetBannedStatus(true);
             }
         }
 
         public void Unlock(int id)
         {
-            Player foundPlayer;
+            Player player;
 
-            bool playerFound = TryGetPlayer(out foundPlayer, id);
+            bool playerFound = TryGetPlayer(out player, id);
 
             if (playerFound == true)
             {
-                foundPlayer.SetBannedStatus(false);
+                player.SetBannedStatus(false);
             }
         }
 
