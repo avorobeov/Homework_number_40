@@ -213,9 +213,9 @@ namespace Homework_number_40
         {
             Player player;
 
-            bool playerFound = TryGetPlayer(out player, id);
+            bool isFoundPlayer = TryGetPlayer(out player, id);
 
-            if (playerFound == true)
+            if (isFoundPlayer == true)
             {
                 player.SetBannedStatus(false);
             }
@@ -255,9 +255,9 @@ namespace Homework_number_40
 
         private bool ContainsId(int id)
         {
-            Player foundPlayer;
+            Player player;
 
-            return TryGetPlayer(out foundPlayer, id);
+            return TryGetPlayer(out player, id);
         }
 
         private void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
