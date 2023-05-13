@@ -7,8 +7,8 @@ namespace Homework_number_40
     {
         const string СommandAddUser = "1";
         const string CommandPrint = "2";
-        const string CommandBan = "3";
-        const string CommandUnBan = "4";
+        const string CommandBlock = "3";
+        const string CommandUnlock = "4";
         const string CommandRemove = "5";
         const string CommandExit = "6";
 
@@ -39,12 +39,12 @@ namespace Homework_number_40
                         RemovePlayer(database);
                         break;
 
-                    case CommandBan:
-                        SetPlayerBan(database);
+                    case CommandBlock:
+                        SetPlayerBlock(database);
                         break;
 
-                    case CommandUnBan:
-                        SetPlayerUnBan(database);
+                    case CommandUnlock:
+                        SetPlayerUnlock(database);
                         break;
 
                     case CommandExit:
@@ -64,8 +64,8 @@ namespace Homework_number_40
                            "\nДоступные команды\n\n" +
                            $"1) Добавить игрока ведите {СommandAddUser}\n\n" +
                            $"2) Вывод списка игроков ведите {CommandPrint}\n\n" +
-                           $"3) Для того что бы забанить игрока ведите {CommandBan}\n\n" +
-                           $"4) Для того что бы разбанить игрока ведите  {CommandUnBan}\n\n" +
+                           $"3) Для того что бы забанить игрока ведите {CommandBlock}\n\n" +
+                           $"4) Для того что бы разбанить игрока ведите  {CommandUnlock}\n\n" +
                            $"5) Удалить игрока ведите {CommandRemove}\n\n" +
                            $"6) Для выхода ведите: {CommandExit}" +
                            $"Укажите команду: ");
@@ -90,18 +90,18 @@ namespace Homework_number_40
             database.Remove(id);
         }
 
-        private static void SetPlayerBan(Database database)
+        private static void SetPlayerBlock(Database database)
         {
             int id = GetNumber("Укажите ID пользователя для того что бы его забанить : ");
 
-            database.Ban(id);
+            database.Block(id);
         }
 
-        private static void SetPlayerUnBan(Database database)
+        private static void SetPlayerUnlock(Database database)
         {
             int id = GetNumber("Укажите ID пользователя для того что бы разбанить пользователя: ");
 
-            database.UnBan(id);
+            database.Unlock(id);
         }
 
         private static int GetNumber(string text)
@@ -180,7 +180,7 @@ namespace Homework_number_40
             }
         }
 
-        public void Ban(int id)
+        public void Block(int id)
         {
             Player foundPlayer;
 
@@ -192,7 +192,7 @@ namespace Homework_number_40
             }
         }
 
-        public void UnBan(int id)
+        public void Unlock(int id)
         {
             Player foundPlayer;
 
