@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Homework_number_40
 {
@@ -80,7 +81,14 @@ namespace Homework_number_40
             Console.Write("Укажите имя пользователя: ");
             string name = Console.ReadLine();
 
-            database.Add(new Player(id, name, lavel, isBanned));
+            if (database.TryAdd(new Player(id, name, lavel, isBanned)) == true)
+            {
+                ShowMessage("Данные пользователя успешно добавлены!");
+            }
+            else
+            {
+                ShowMessage("Пользователь с таким ID уже существует в базе!", ConsoleColor.Red);
+            }
         }
 
         private static void RemovePlayer(Database database)
@@ -127,6 +135,13 @@ namespace Homework_number_40
 
             return number;
         }
+
+        private static void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
+        {
+            Console.ForegroundColor = consoleColor;
+            Console.WriteLine(text);
+            Console.ResetColor();
+        }
     }
 
     class Player
@@ -152,19 +167,19 @@ namespace Homework_number_40
 
     class Database
     {
-        private List<Player> _players = new List<Player>();
+        public List<Player> Players { get; private set; }
 
-        public void Add(Player player)
+        public bool TryAdd(Player player)
         {
             if (ContainsId(player.Id) == false)
             {
-                _players.Add(player);
+                Players.Add(player);
 
-                ShowMessage("Данные пользователя успешно добавлены!");
+                return true;
             }
             else
             {
-                ShowMessage("Пользователь с таким ID уже существует в базе!", ConsoleColor.Red);
+                return false;
             }
         }
 
@@ -176,7 +191,7 @@ namespace Homework_number_40
 
             if (playerFound == true)
             {
-                _players.Remove(foundPlayer);
+                Players.Remove(foundPlayer);
             }
         }
 
@@ -204,30 +219,15 @@ namespace Homework_number_40
             }
         }
 
-        public void ShowPlayers()
-        {
-            if (_players.Count > 0)
-            {
-                for (int i = 0; i < _players.Count; i++)
-                {
-                    Console.WriteLine($"Id: {_players[i].Id} Name: {_players[i].Name} Level: {_players[i].Level} Banned: {_players[i].IsBanned}");
-                }
-            }
-            else
-            {
-                ShowMessage("К сожалению ни одного игрока в базе нет ", ConsoleColor.Blue);
-            }
-        }
-
         private bool TryGetPlayer(out Player player, int id)
         {
             player = null;
 
-            for (int i = 0; i < _players.Count; i++)
+            for (int i = 0; i < Players.Count; i++)
             {
-                if (_players[i].Id == id)
+                if (Players[i].Id == id)
                 {
-                    player = _players[i];
+                    player = Players[i];
 
                     return true;
                 }
@@ -241,13 +241,6 @@ namespace Homework_number_40
             Player foundPlayer;
 
             return TryGetPlayer(out foundPlayer, id);
-        }
-
-        private void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
-        {
-            Console.ForegroundColor = consoleColor;
-            Console.WriteLine(text);
-            Console.ResetColor();
         }
     }
 }
