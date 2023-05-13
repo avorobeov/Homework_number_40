@@ -151,7 +151,7 @@ namespace Homework_number_40
 
         public void Add(Player player)
         {
-            if (ContainsId(player.Id) == false)
+            if (TryGetPlayer(out player, player.Id) == false)
             {
                 _players.Add(player);
 
@@ -216,8 +216,6 @@ namespace Homework_number_40
 
         private bool TryGetPlayer(out Player player, int id)
         {
-            player = null;
-
             for (int i = 0; i < _players.Count; i++)
             {
                 if (_players[i].Id == id)
@@ -228,14 +226,9 @@ namespace Homework_number_40
                 }
             }
 
+            player = null;
+
             return false;
-        }
-
-        private bool ContainsId(int id)
-        {
-            Player foundPlayer;
-
-            return TryGetPlayer(out foundPlayer, id);
         }
 
         private void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
