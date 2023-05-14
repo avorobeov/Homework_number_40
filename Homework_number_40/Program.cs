@@ -29,7 +29,7 @@ namespace Homework_number_40
                 switch (userInput)
                 {
                     case СommandAddUser:
-                        AddPlayer(database);
+                        database.Add();
                         break;
 
                     case CommandPrint:
@@ -37,15 +37,15 @@ namespace Homework_number_40
                         break;
 
                     case CommandRemove:
-                        RemovePlayer(database);
+                        database.Remove();
                         break;
 
                     case CommandBlock:
-                        SetPlayerBlock(database);
+                        database.Block();
                         break;
 
                     case CommandUnlock:
-                        SetPlayerUnlock(database);
+                        database.Unlock();
                         break;
 
                     case CommandExit:
@@ -53,7 +53,7 @@ namespace Homework_number_40
                         break;
 
                     default:
-                        ShowMessage("Такой команды нет в наличии!", ConsoleColor.DarkMagenta);
+                        Console.WriteLine("Такой команды нет в наличии!", ConsoleColor.DarkMagenta);
                         break;
                 }
             }
@@ -70,79 +70,6 @@ namespace Homework_number_40
                            $"5) Удалить игрока ведите {CommandRemove}\n\n" +
                            $"6) Для выхода ведите: {CommandExit}" +
                            $"Укажите команду: ");
-        }
-
-        private static void AddPlayer(Database database)
-        {
-            int id = GetNumber("Укажите ID пользователя: ");
-
-            int lavel = GetNumber("Укажите lavel пользователя: ");
-
-            bool isBanned = false;
-
-            ShowMessage("Укажите имя пользователя: ", ConsoleColor.Blue);
-            string name = Console.ReadLine();
-
-            if (database.TryAdd(new Player(id, name, lavel, isBanned)) == true)
-            {
-                ShowMessage("Данные пользователя успешно добавлены!");
-            }
-            else
-            {
-                ShowMessage("Пользователь с таким ID уже существует в базе!", ConsoleColor.Red);
-            }
-        }
-
-        private static void RemovePlayer(Database database)
-        {
-            int id = GetNumber("Укажите ID пользователя для его удаления: ");
-
-            database.Remove(id);
-        }
-
-        private static void SetPlayerBlock(Database database)
-        {
-            int id = GetNumber("Укажите ID пользователя для того что бы его забанить : ");
-
-            database.Block(id);
-        }
-
-        private static void SetPlayerUnlock(Database database)
-        {
-            int id = GetNumber("Укажите ID пользователя для того что бы разбанить пользователя: ");
-
-            database.Unlock(id);
-        }
-
-        private static int GetNumber(string text)
-        {
-            bool isNumber = false;
-            string userInput;
-            int number = 0;
-
-            while (isNumber == false)
-            {
-                ShowMessage(text, ConsoleColor.Blue);
-                userInput = Console.ReadLine();
-
-                if (int.TryParse(userInput, out number))
-                {
-                    isNumber = true;
-                }
-                else
-                {
-                    ShowMessage("Не верный формат вода", ConsoleColor.Red);
-                }
-            }
-
-            return number;
-        }
-
-        private static void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
-        {
-            Console.ForegroundColor = consoleColor;
-            Console.WriteLine(text);
-            Console.ResetColor();
         }
     }
 
@@ -171,53 +98,86 @@ namespace Homework_number_40
     {
         public List<Player> _players = new List<Player>();
 
-        public bool TryAdd(Player player)
+        public void Add()
         {
-            if (ContainsId(player.Id) == false)
-            {
-                _players.Add(player);
+            int id = GetNumber("Укажите ID пользователя: ");
 
-                return true;
+            int lavel = GetNumber("Укажите lavel пользователя: ");
+
+            bool isBanned = false;
+
+            ShowMessage("Укажите имя пользователя: ", ConsoleColor.Blue);
+            string name = Console.ReadLine();
+
+            if (ContainsId(id) == false)
+            {
+                _players.Add(new Player(id, name, lavel, isBanned));
+
+                ShowMessage("Данные пользователя успешно добавлены!");
             }
             else
             {
-                return false;
+                ShowMessage("Пользователь с таким ID уже существует в базе!", ConsoleColor.Red);
             }
         }
 
-        public void Remove(int id)
+        public void Remove()
         {
             Player player;
+
+            int id = GetNumber("Укажите ID пользователя для его удаления: ");
 
             bool isFoundPlayer = TryGetPlayer(out player, id);
 
             if (isFoundPlayer == true)
             {
                 _players.Remove(player);
+
+                ShowMessage("Пользователь успешно удалён из базы данных!");
+            }
+            else
+            {
+                ShowMessage("К сожалению такого пользователя в базе нет!", ConsoleColor.Red);
             }
         }
 
-        public void Block(int id)
+        public void Block()
         {
             Player player;
+
+            int id = GetNumber("Укажите ID пользователя для того что бы его забанить : ");
 
             bool isFoundPlayer = TryGetPlayer(out player, id);
 
             if (isFoundPlayer == true)
             {
                 player.SetBannedStatus(true);
+
+                ShowMessage("Пользователь успешно заблокирован!");
+            }
+            else
+            {
+                ShowMessage("К сожалению такого пользователя в базе нет!", ConsoleColor.Red);
             }
         }
 
-        public void Unlock(int id)
+        public void Unlock()
         {
             Player player;
+
+            int id = GetNumber("Укажите ID пользователя для того что бы разбанить пользователя: ");
 
             bool isFoundPlayer = TryGetPlayer(out player, id);
 
             if (isFoundPlayer == true)
             {
                 player.SetBannedStatus(false);
+
+                ShowMessage("Пользователь успешно разблокирован!");
+            }
+            else
+            {
+                ShowMessage("К сожалению такого пользователя в базе нет!", ConsoleColor.Red);
             }
         }
 
@@ -258,6 +218,30 @@ namespace Homework_number_40
             Player player;
 
             return TryGetPlayer(out player, id);
+        }
+
+        private int GetNumber(string text)
+        {
+            bool isNumber = false;
+            string userInput;
+            int number = 0;
+
+            while (isNumber == false)
+            {
+                ShowMessage(text, ConsoleColor.Blue);
+                userInput = Console.ReadLine();
+
+                if (int.TryParse(userInput, out number))
+                {
+                    isNumber = true;
+                }
+                else
+                {
+                    ShowMessage("Не верный формат вода", ConsoleColor.Red);
+                }
+            }
+
+            return number;
         }
 
         private void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
