@@ -52,7 +52,7 @@ namespace Homework_number_40
                         break;
 
                     default:
-                        Console.WriteLine("Такой команды нет в наличии!", ConsoleColor.DarkMagenta);
+                        Console.WriteLine("Такой команды нет в наличии!");
                         break;
                 }
             }
