@@ -68,7 +68,7 @@ namespace Homework_number_40
                            $"3) Для того что бы забанить игрока ведите {CommandBlock}\n\n" +
                            $"4) Для того что бы разбанить игрока ведите  {CommandUnlock}\n\n" +
                            $"5) Удалить игрока ведите {CommandRemove}\n\n" +
-                           $"6) Для выхода ведите: {CommandExit}" +
+                           $"6) Для выхода ведите: {CommandExit}\n\n" +
                            $"Укажите команду: ");
         }
     }
@@ -127,17 +127,11 @@ namespace Homework_number_40
 
             int id = GetNumber("Укажите ID пользователя для его удаления: ");
 
-            bool isFoundPlayer = TryGetPlayer(out player, id);
-
-            if (isFoundPlayer == true)
+            if (TryGetPlayer(out player, id, "К сожалению такого пользователя в базе нет!") == true)
             {
                 _players.Remove(player);
 
                 ShowMessage("Пользователь успешно удалён из базы данных!");
-            }
-            else
-            {
-                ShowMessage("К сожалению такого пользователя в базе нет!", ConsoleColor.Red);
             }
         }
 
@@ -147,17 +141,11 @@ namespace Homework_number_40
 
             int id = GetNumber("Укажите ID пользователя для того что бы его забанить : ");
 
-            bool isFoundPlayer = TryGetPlayer(out player, id);
-
-            if (isFoundPlayer == true)
+            if (TryGetPlayer(out player, id, "К сожалению такого пользователя в базе нет!") == true)
             {
                 player.SetBannedStatus(true);
 
                 ShowMessage("Пользователь успешно заблокирован!");
-            }
-            else
-            {
-                ShowMessage("К сожалению такого пользователя в базе нет!", ConsoleColor.Red);
             }
         }
 
@@ -167,17 +155,11 @@ namespace Homework_number_40
 
             int id = GetNumber("Укажите ID пользователя для того что бы разбанить пользователя: ");
 
-            bool isFoundPlayer = TryGetPlayer(out player, id);
-
-            if (isFoundPlayer == true)
+            if (TryGetPlayer(out player, id, "К сожалению такого пользователя в базе нет!") == true)
             {
                 player.SetBannedStatus(false);
 
                 ShowMessage("Пользователь успешно разблокирован!");
-            }
-            else
-            {
-                ShowMessage("К сожалению такого пользователя в базе нет!", ConsoleColor.Red);
             }
         }
 
@@ -196,7 +178,7 @@ namespace Homework_number_40
             }
         }
 
-        private bool TryGetPlayer(out Player player, int id)
+        private bool TryGetPlayer(out Player player, int id, string messageError = null)
         {
             player = null;
 
@@ -208,6 +190,11 @@ namespace Homework_number_40
 
                     return true;
                 }
+            }
+
+            if (messageError != null)
+            {
+                ShowMessage(messageError, ConsoleColor.Red);
             }
 
             return false;
