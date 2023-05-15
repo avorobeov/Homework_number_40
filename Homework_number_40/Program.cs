@@ -88,9 +88,14 @@ namespace Homework_number_40
         public bool IsBanned { get; private set; }
         public string Name { get; private set; }
 
-        public void SetBannedStatus(bool isBanned)
+        public void SetBanned()
         {
-            IsBanned = isBanned;
+            IsBanned = true;
+        }
+
+        public void SetUnlock()
+        {
+            IsBanned = false;
         }
     }
 
@@ -143,7 +148,7 @@ namespace Homework_number_40
 
             if (TryGetPlayer(out player, id, "К сожалению такого пользователя в базе нет!") == true)
             {
-                player.SetBannedStatus(true);
+                player.SetBanned();
 
                 ShowMessage("Пользователь успешно заблокирован!");
             }
@@ -157,7 +162,7 @@ namespace Homework_number_40
 
             if (TryGetPlayer(out player, id, "К сожалению такого пользователя в базе нет!") == true)
             {
-                player.SetBannedStatus(false);
+                player.SetUnlock();
 
                 ShowMessage("Пользователь успешно разблокирован!");
             }
