@@ -5,15 +5,15 @@ namespace Homework_number_40
 {
     internal class Program
     {
-        const string СommandAddUser = "1";
-        const string CommandPrint = "2";
-        const string CommandBlock = "3";
-        const string CommandUnlock = "4";
-        const string CommandRemove = "5";
-        const string CommandExit = "6";
-
         static void Main(string[] args)
         {
+            const string СommandAddUser = "1";
+            const string CommandPrint = "2";
+            const string CommandBlock = "3";
+            const string CommandUnlock = "4";
+            const string CommandRemove = "5";
+            const string CommandExit = "6";
+
             Database database = new Database();
 
             bool isExit = false;
@@ -21,7 +21,15 @@ namespace Homework_number_40
 
             while (isExit == false)
             {
-                ShowMenu();
+                Console.WriteLine("Меню\n" +
+                        "\nДоступные команды\n\n" +
+                        $"1) Добавить игрока ведите {СommandAddUser}\n\n" +
+                        $"2) Вывод списка игроков ведите {CommandPrint}\n\n" +
+                        $"3) Для того что бы забанить игрока ведите {CommandBlock}\n\n" +
+                        $"4) Для того что бы разбанить игрока ведите  {CommandUnlock}\n\n" +
+                        $"5) Удалить игрока ведите {CommandRemove}\n\n" +
+                        $"6) Для выхода ведите: {CommandExit}\n\n" +
+                        $"Укажите команду: ");
 
                 userInput = Console.ReadLine();
 
@@ -58,18 +66,6 @@ namespace Homework_number_40
             }
         }
 
-        static void ShowMenu()
-        {
-            Console.WriteLine("Меню\n" +
-                           "\nДоступные команды\n\n" +
-                           $"1) Добавить игрока ведите {СommandAddUser}\n\n" +
-                           $"2) Вывод списка игроков ведите {CommandPrint}\n\n" +
-                           $"3) Для того что бы забанить игрока ведите {CommandBlock}\n\n" +
-                           $"4) Для того что бы разбанить игрока ведите  {CommandUnlock}\n\n" +
-                           $"5) Удалить игрока ведите {CommandRemove}\n\n" +
-                           $"6) Для выхода ведите: {CommandExit}\n\n" +
-                           $"Укажите команду: ");
-        }
     }
 
     class Player
@@ -87,12 +83,12 @@ namespace Homework_number_40
         public bool IsBanned { get; private set; }
         public string Name { get; private set; }
 
-        public void SetBanned()
+        public void Ban()
         {
             IsBanned = true;
         }
 
-        public void SetUnlock()
+        public void Unban()
         {
             IsBanned = false;
         }
@@ -100,11 +96,12 @@ namespace Homework_number_40
 
     class Database
     {
-        public List<Player> _players = new List<Player>();
+        private List<Player> _players = new List<Player>();
+        private int _currentId;
 
         public void Add()
         {
-            int id = GetNumber("Укажите ID пользователя: ");
+            _currentId++;
 
             int lavel = GetNumber("Укажите lavel пользователя: ");
 
@@ -113,25 +110,14 @@ namespace Homework_number_40
             ShowMessage("Укажите имя пользователя: ", ConsoleColor.Blue);
             string name = Console.ReadLine();
 
-            if (ContainsId(id) == false)
-            {
-                _players.Add(new Player(id, name, lavel, isBanned));
+            _players.Add(new Player(_currentId, name, lavel, isBanned));
 
-                ShowMessage("Данные пользователя успешно добавлены!");
-            }
-            else
-            {
-                ShowMessage("Пользователь с таким ID уже существует в базе!", ConsoleColor.Red);
-            }
+            ShowMessage("Данные пользователя успешно добавлены!");
         }
 
         public void Remove()
         {
-            Player player;
-
-            int id = GetNumber("Укажите ID пользователя для его удаления: ");
-
-            if (TryGetPlayer(out player, id, "К сожалению такого пользователя в базе нет!") == true)
+            if (TryGetPlayer(out Player player) == true)
             {
                 _players.Remove(player);
 
@@ -141,13 +127,9 @@ namespace Homework_number_40
 
         public void Block()
         {
-            Player player;
-
-            int id = GetNumber("Укажите ID пользователя для того что бы его забанить : ");
-
-            if (TryGetPlayer(out player, id, "К сожалению такого пользователя в базе нет!") == true)
+            if (TryGetPlayer(out Player player) == true)
             {
-                player.SetBanned();
+                player.Ban();
 
                 ShowMessage("Пользователь успешно заблокирован!");
             }
@@ -155,13 +137,9 @@ namespace Homework_number_40
 
         public void Unlock()
         {
-            Player player;
-
-            int id = GetNumber("Укажите ID пользователя для того что бы разбанить пользователя: ");
-
-            if (TryGetPlayer(out player, id, "К сожалению такого пользователя в базе нет!") == true)
+            if (TryGetPlayer(out Player player) == true)
             {
-                player.SetUnlock();
+                player.Unban();
 
                 ShowMessage("Пользователь успешно разблокирован!");
             }
@@ -182,9 +160,11 @@ namespace Homework_number_40
             }
         }
 
-        private bool TryGetPlayer(out Player player, int id, string messageError = null)
+        private bool TryGetPlayer(out Player player)
         {
             player = null;
+
+            int id = GetNumber("Укажите ID пользователя для того что бы разбанить пользователя: ");
 
             for (int i = 0; i < _players.Count; i++)
             {
@@ -196,19 +176,9 @@ namespace Homework_number_40
                 }
             }
 
-            if (messageError != null)
-            {
-                ShowMessage(messageError, ConsoleColor.Red);
-            }
+            ShowMessage("К сожалению такого пользователя в базе нет!", ConsoleColor.Red);
 
             return false;
-        }
-
-        private bool ContainsId(int id)
-        {
-            Player player;
-
-            return TryGetPlayer(out player, id);
         }
 
         private int GetNumber(string text)
